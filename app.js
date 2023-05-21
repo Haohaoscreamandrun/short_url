@@ -2,7 +2,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
-const short_url = require('./models/short_url')
+const ShortUrl = require('./models/short_url')
 
 //variables
 const app = express()
@@ -38,14 +38,30 @@ app.get('/', (req,res)=>{
 
 app.post('/respond',(req, res)=>{
   const originalUrl = req.body.original
+  let shortUrl = ''
   // Search for same url
-
-  // if no, create a new one and store
-
-  // render respond
-  let shortUrl = originalUrl
-  // direct to /respond
-  res.render('respond', {shortUrl})
+  ShortUrl
+    .findOne({'input': originalUrl})
+    .then((url)=>{
+      if (url){
+        // if yes, post the same url
+        shortUrl = url.output
+        return Promise.resolve()
+      } else {
+        // if no, create a new one
+        shortUrl = `localhost:${port}/redirect/${randomUrl(5)}`
+        // store on MongoDB
+        return ShortUrl.create({input: originalUrl, output: shortUrl})
+      }
+    })
+    
+    // direct to /respond
+    .then(()=>{
+      // console.log(shortUrl)
+      res.render('respond', {shortUrl})
+    })
+    // catch error
+    .catch(err => console.error(err))
 })
 
 app.get('/redirect/:id',(req,res)=>{
@@ -69,8 +85,8 @@ function randomUrl(digits){
   collection = collection.concat(numbers.split(''))
   // generating
   let url = ''
-  for ( let i = 0 ; i < digits ; i ++){
-    let index = Math.floor(Math.random * collection.length)
+  for ( let i = 0 ; i < Number(digits) ; i ++){
+    let index = Math.floor(Math.random() * collection.length)
     url += collection[index]
   }
   // return result
