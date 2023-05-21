@@ -1,6 +1,8 @@
 //Include packages
 const express = require('express')
 const mongoose = require('mongoose')
+const exphbs = require('express-handlebars')
+
 //variables
 const app = express()
 const port = 3000
@@ -18,10 +20,16 @@ db.once('open',()=>{
   console.log('mongodb connected!')
 })
 
+// Set engine
+app.engine('handlebars', exphbs.engine({
+  defaultLayout: 'main',
+  extname: '.handlebars'
+}))
+app.set('view engine', 'handlebars')
 
-//Home route
+//hbs
 app.get('/', (req,res)=>{
-  res.send("Hello")
+  res.render('index')
 })
 
 //Listen to port
