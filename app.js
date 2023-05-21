@@ -36,7 +36,7 @@ app.get('/', (req,res)=>{
   res.render('index')
 })
 
-app.post('/respond',(req, res)=>{
+app.post('/',(req, res)=>{
   const originalUrl = req.body.original
   let shortUrl = ''
   // Search for same url
@@ -49,7 +49,7 @@ app.post('/respond',(req, res)=>{
         return Promise.resolve()
       } else {
         // if no, create a new one
-        shortUrl = `localhost:${port}/redirect/${randomUrl(5)}`
+        shortUrl = `localhost:${port}/${randomUrl(5)}`
         // store on MongoDB
         return ShortUrl.create({input: originalUrl, output: shortUrl})
       }
@@ -57,15 +57,21 @@ app.post('/respond',(req, res)=>{
     
     // direct to /respond
     .then(()=>{
-      // console.log(shortUrl)
-      res.render('respond', {shortUrl})
+      res.render('respond', {originalUrl, shortUrl})
     })
     // catch error
     .catch(err => console.error(err))
 })
 
-app.get('/redirect/:id',(req,res)=>{
-
+app.get('/:shortUrl',(req,res)=>{
+  const shortUrl = `localhost:${port}/${req.params.shortUrl}`
+  console.log(shortUrl)
+  ShortUrl
+    .findOne({'output': shortUrl})
+    .then((url)=>{
+      res.redirect(url.input)
+    })
+    .catch(err => console.error(err))
 })
 
 //Listen to port
