@@ -19,18 +19,22 @@ This application allows user to produce a shorter URL when input one. Input same
 ```
 npm install
 ```
-4. After finishing downloading, type:
+4. Set MONGODB_URI env. Get your MongoDB connection string first, and type below command in terminal:
+```
+export MONGODB_URI="Your Connection String Here"
+```
+5. After finishing downloading, type:
 ```
 npm run start
 ```
-5. Below message showing on terminal means the app start running:
+6. Below message showing on terminal means the app start running:
 ```
 App is running on localhost:3000
 mongodb connected!
 ``` 
-6. Open your browser and go to:[http://localhost:3000](http://localhost:3000)
+7. Open your browser and go to:[http://localhost:3000](http://localhost:3000)
 
-7. In case you're done using it:
+8. In case you're done using it:
 ```
 ctrl + c
 ```
