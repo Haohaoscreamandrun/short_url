@@ -35,4 +35,14 @@ router.post('/',(req, res)=>{
     .catch(err => console.error(err))
 })
 
+router.get('/:shortUrl',(req,res)=>{
+  const shortUrl = `localhost:${port}/${req.params.shortUrl}`
+  ShortUrl
+    .findOne({'output': shortUrl})
+    .then((url)=>{
+      res.redirect(url.input)
+    })
+    .catch(err => console.error(err))
+})
+
 module.exports = router

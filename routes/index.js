@@ -1,12 +1,10 @@
 const express = require('express')
 const router = express.Router()
+const home = require('./modules/home')
 
 // home
-const home = require('./modules/home')
 router.use('/', home)
 
-// respond
-const respond = require('./modules/respond')
-router.use('/:shortUrl', respond)
+// router will include URL in index, so actually get to /:shortUrl/:shortUrl. They should all be in root route
 
 module.exports = router

@@ -11,9 +11,7 @@
 
 <script>
   function copy() {
-      const newUrl = document.getElementById('newUrl').innerHTML
-      // newUrl.select()
-      // newUrl.setSelectionRange(0, 99999)
+      const newUrl = document.getElementById('newUrl').innerText
       navigator.clipboard.writeText(newUrl)
       alert("URL coppied: " + newUrl)
     }
