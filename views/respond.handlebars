@@ -13,6 +13,7 @@
   function copy() {
       const newUrl = document.getElementById('newUrl').innerText
       navigator.clipboard.writeText(newUrl)
-      alert("URL coppied: " + newUrl)
+      .then(()=> alert("URL coppied: " + newUrl))
+      .catch(err => console.error(err))
     }
 </script>
